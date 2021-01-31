@@ -1,0 +1,1 @@
+from .logger import log, msg, warn, err
