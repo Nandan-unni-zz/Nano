@@ -1,5 +1,9 @@
-from nano.app import Nano
+# main.py for example app
+from nanoAPI import nanoAPI
+from example_app.routes import router
 
-api = Nano()
+api = nanoAPI()
 
-import example.routes
+api.setRouter('/api', router)
+
+api.run()

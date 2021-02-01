@@ -1,4 +1,4 @@
-from nano.utils import log
+from nanoAPI.utils import log
 
 class Request:
 

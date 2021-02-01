@@ -1,4 +1,4 @@
-from nano.db import model
+from nanoAPI.db import model
 
 class User(model.Model):
     username = model.StringType('username', max_length=50, min_length=4, unique=True, required=True)

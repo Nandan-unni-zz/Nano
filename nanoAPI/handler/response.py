@@ -1,6 +1,5 @@
-from nano.utils import log
+from nanoAPI.utils import log
 from .status import get_status_text
-
 class Response:
 
     def __init__(self, status=200, data={}):

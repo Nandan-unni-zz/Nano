@@ -9,7 +9,7 @@ Nano is an Express inspired nano web framework which is under development. Curre
 ```bash
 $ pip3 install -r requirements.txt
 
-$ gunicorn main:api
+$ python3 main.py run:<appname>
 ```
 
 ## Documentation

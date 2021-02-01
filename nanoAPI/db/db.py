@@ -1,6 +1,7 @@
 import sqlite3
 from nano.utils import err
 
+
 class DB:
     def __init__(self, models):
         self.server = sqlite3.connect('database.db')
@@ -12,7 +13,8 @@ class DB:
     def is_booted(self):
         is_booted = False
         for model in self.models:
-            self.admin.execute( f"SELECT count(name) FROM sqlite_master WHERE type='table' AND name='{model.__name__.lower()}'")
+            self.admin.execute(
+                f"SELECT count(name) FROM sqlite_master WHERE type='table' AND name='{model.__name__.lower()}'")
             if self.admin.fetchone()[0]:
                 is_booted = True
         return is_booted
