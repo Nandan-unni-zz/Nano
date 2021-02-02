@@ -1,19 +1,6 @@
 from nanoAPI.utils import parse_route
 
 
-class Route:
-    def __init__(self, route="/user/:id/token"):
-        mods = str(route).split("/")
-        self.params = []
-        for mod in mods:
-            if mod.startswith(":"):
-                self.params.append(mod.replace(':', ''))
-        print(self.params)
-# da we have to routes.... user/manage and user/:username..
-# . if a user with username as manage give req..
-# how can we know which is the url
-
-
 class Router:
 
     def __init__(self):
