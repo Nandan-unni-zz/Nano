@@ -1,5 +1,5 @@
 class _BaseType():
-    def __init__(self, model_type, name, unique, required, default):
+    def __init__(self, model_type, name, unique, required):
         self.name = str(name).lower()
         self.unique = 'UNIQUE ' if unique else ''
         self.required = 'NOT NULL ' if required else ''  # Default : False
@@ -8,7 +8,7 @@ class _BaseType():
 
 class IntegerType(_BaseType):
     def __init__(self, name="", max=10000000, min=-10000000, unique=False, required=False, default=None):
-        super().__init__('INTEGER', name, unique, required, default)
+        super().__init__('INTEGER', name, unique, required)
         self.check = f"CHECK ({self.name} < {max} AND {self.name} > {min})"
         self.default = f"DEFAULT {default if default else 'NULL'} "
         self.command = self.base_cmd + self.default + self.check
@@ -16,9 +16,9 @@ class IntegerType(_BaseType):
 
 class StringType(_BaseType):
     def __init__(self, name="", max_length=None, min_length=0, unique=False, required=False, default=None):
-        super().__init__('TEXT', name, unique, required, default)
+        super().__init__('TEXT', name, unique, required)
         self.default = f"DEFAULT {default if default else 'NULL'} "
-        self.check = f"CHECK (LEN({self.name}) < {max_length} AND LEN({self.name}) > {min_length})"
+        self.check = f"CHECK (length({self.name}) < {max_length} AND length({self.name}) > {min_length})"
         self.command = self.base_cmd + self.check
 
 
@@ -27,4 +27,3 @@ class BooleanType(_BaseType):
         super().__init__('INTEGER', name, unique, required, default)
         self.default = f"DEFAULT {1 if default else 0} "
         self.command = self.base_cmd + self.default
-

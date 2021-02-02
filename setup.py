@@ -7,14 +7,14 @@ with open("README.md", "r") as README:
 
 setup(
     name="nanoAPI",
-    version="0.1.0",
+    version="0.2.0",
     author="Nandanunni A S",
     author_email="asnqln@gmail.com",
     description="A nano web framework",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Nandan-unni/Nano",
-    packages=find_packages(),
+    packages=['gunicorn', 'colorama'],
     license="MIT",
     classifiers=[
         "License :: OSI Approved :: MIT License",
@@ -24,3 +24,8 @@ setup(
     ],
     python_requires='>=3.6',
 )
+
+
+# python3 setup.py sdist bdist_wheel
+# python3 -m twine upload --repository testpypi dist/*
+# python3 -m twine upload --repository-url https://upload.pypi.org/legacy/ dist/*

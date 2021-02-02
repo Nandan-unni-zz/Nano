@@ -1,16 +1,65 @@
+from nanoAPI.utils import parse_route
+
+
+class Route:
+    def __init__(self, route="/user/:id/token"):
+        mods = str(route).split("/")
+        self.params = []
+        for mod in mods:
+            if mod.startswith(":"):
+                self.params.append(mod.replace(':', ''))
+        print(self.params)
+# da we have to routes.... user/manage and user/:username..
+# . if a user with username as manage give req..
+# how can we know which is the url
+
+
 class Router:
 
     def __init__(self):
-        self.urls = []
-        self.controllers = []
-        self.methods = []
+        self.routes = []
 
-    def get(self, url: str, controller):
-        self.urls.append(url)
-        self.controllers.append(controller)
-        self.methods.append('GET')
+    def get(self, route: str, controller):
+        parsed_route = parse_route(route)
+        parsed_route["method"] = "GET"
+        parsed_route["controller"] = controller
+        self.routes.append(parsed_route)
 
-    def post(self, url: str, controller):
-        self.urls.append(url)
-        self.controllers.append(controller)
-        self.methods.append('POST')
+    def post(self, route: str, controller):
+        parsed_route = parse_route(route)
+        parsed_route["method"] = "POST"
+        parsed_route["controller"] = controller
+        self.routes.append(parsed_route)
+
+    def search_route(self, req):
+        for route in self.routes:
+            if req.method == route['method']:
+                if req.url == route['url']:
+                    return route['controller']
+                else:
+                    isSame = False
+                    req_modes = req.url.split("/")
+                    self_mods = route['url'].split("/")
+                    if len(req_modes) == len(self_mods):
+                        isSame = True
+                        for i in range(len(self_mods)):
+                            if str(self_mods[i]).startswith(":"):
+                                pass
+                            else:
+                                if self_mods[i] == req_modes[i]:
+                                    pass
+                                else:
+                                    isSame = False
+                    if isSame:
+                        for i in range(len(self_mods)):
+                            if str(self_mods[i]).startswith(":"):
+                                param = self_mods[i].replace(":", "")
+                                req.params[param] = req_modes[i]
+                        return route["controller"], req
+            else:
+                pass
+        return None, req
+
+
+if __name__ == '__main__':
+    route = Route()

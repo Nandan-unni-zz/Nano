@@ -1,6 +1,7 @@
 import sqlite3
 from .prop_types import IntegerType, StringType, BooleanType
 
+
 class Model:
 
     table_name = str()
@@ -41,9 +42,9 @@ class Model:
         for field in self.__dict__:
             if ((field.startswith("__") and field.endswith("__"))
                 or str(self.__dict__[field]).startswith("<classmethod")
-                    or str(self.__dict__[field]).startswith("<function")):
+                or str(self.__dict__[field]).startswith("<function")
+                    or field == "table_name"):
                 pass
             else:
                 self.fields.append(self.__dict__[field].command)
-        print(self.fields)
-
+        return self.fields

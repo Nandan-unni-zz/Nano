@@ -1,12 +1,16 @@
 import sqlite3
-from nano.utils import err
+from nanoAPI.utils import err, msg
+from nanoAPI.db.model import Model
 
 
 class DB:
-    def __init__(self, models):
+    def __init__(self):
         self.server = sqlite3.connect('database.db')
         self.admin = self.server.cursor()
-        self.models = models
+        self.models = []
+
+    def set_models(self, *args):
+        self.models.extend(args)
         for model in self.models:
             model.table_name = model.__name__.lower()
 
@@ -24,11 +28,12 @@ class DB:
         for model in self.models:
             for field in model.get_fields():
                 fields = fields + ", " + field
-            try:
-                self.admin.execute(
-                    f"CREATE TABLE {model.__name__.lower()} ({fields})")
-            except sqlite3.OperationalError:
-                print(err("MODEL", f"Model {model.__name__} already booted"))
+            # try:
+            self.admin.execute(
+                f"CREATE TABLE IF NOT EXISTS {model.table_name} ({fields})")
+            print(msg("BOOT", f"Model {model.__name__}"))
+            # except sqlite3.OperationalError:
+            #     print(err("MODEL", f"Model {model.__name__} already booted"))
             fields = "id INT PRIMARY KEY NOT NULL"
         self.server.commit()
 
