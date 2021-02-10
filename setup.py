@@ -24,8 +24,8 @@ setup(
     ],
     python_requires='>=3.6',
     install_requires=[
-        'gunicorn = 20.0.4',
-        'colorama = 0.4.4'
+        "gunicorn==20.0.4",
+        "colorama==0.4.4"
     ],
 )
 
