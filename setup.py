@@ -7,14 +7,14 @@ with open("README.md", "r") as README:
 
 setup(
     name="nanoAPI",
-    version="0.2.0",
+    version="0.3.0",
     author="Nandanunni A S",
     author_email="asnqln@gmail.com",
     description="A nano web framework",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Nandan-unni/Nano",
-    packages=['gunicorn', 'colorama'],
+    packages=find_packages(),
     license="MIT",
     classifiers=[
         "License :: OSI Approved :: MIT License",
@@ -23,6 +23,10 @@ setup(
         "Operating System :: OS Independent"
     ],
     python_requires='>=3.6',
+    install_requires=[
+        'gunicorn = 20.0.4',
+        'colorama = 0.4.4'
+    ],
 )
 
 

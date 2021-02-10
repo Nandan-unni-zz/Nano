@@ -48,3 +48,7 @@ class Model:
             else:
                 self.fields.append(self.__dict__[field].command)
         return self.fields
+
+    @classmethod
+    def data_parser(self):
+        pass
