@@ -1,6 +1,6 @@
 # NANO : A Nano Web Framework
 
-Nano is an Express inspired nano web framework which is under development. Currently, it has features of adding routes, controllers and sending API responses (Refer the [example directory](example/) for reference). Defining models with custom field types is also available but is under development.
+Nano is an Express inspired nano web framework which is under development. Currently, it has features of adding routes, controllers and sending API responses (Refer the [example blog app](https://github.com/NandanunniAS/Nano-Blog-App) for reference). Defining models with custom field types is also available but is under development.
 
 **Status** : Under developement
 <br />
@@ -87,4 +87,4 @@ $ python3 main.py run:api
 ```
 
 
-Refer the example app. Working on a better documentation
+Refer the [example blog app](https://github.com/NandanunniAS/Nano-Blog-App) for folder structure. Working on a better documentation

@@ -1,10 +1,16 @@
+from nanoAPI.utils import warn
+
+
 class _BaseType():
     def __init__(self, model_type: str, name: str, unique: bool, required: bool):
-        self.model_type = model_type.lower().capitalize()
-        self.name = name.lower()
-        self.unique = 'UNIQUE ' if unique else ''
-        self.required = 'NOT NULL ' if required else ''  # Default : False
-        self.base_cmd = f"{self.name} {model_type} {self.required}{self.unique}"
+        if name is not None:
+            self.model_type = model_type.lower().capitalize()
+            self.name = name.lower()
+            self.unique = 'UNIQUE ' if unique else ''
+            self.required = 'NOT NULL ' if required else ''  # Default : False
+            self.base_cmd = f"{self.name} {model_type} {self.required}{self.unique}"
+        else:
+            raise TypeError(warn("Provide a name for the field"))
 
 
 class IntegerType(_BaseType):
@@ -17,10 +23,13 @@ class IntegerType(_BaseType):
 
 class StringType(_BaseType):
     def __init__(self, name=None, max_length=None, min_length=0, unique=False, required=False, default=None):
-        super().__init__('TEXT', name, unique, required)
-        self.default = f"DEFAULT {default if default else 'NULL'} "
-        self.check = f"CHECK (length({self.name}) < {max_length} AND length({self.name}) > {min_length})"
-        self.command = self.base_cmd + self.check
+        if max_length is not None:
+            super().__init__('TEXT', name, unique, required)
+            self.default = f"DEFAULT {default if default else 'NULL'} "
+            self.check = f"CHECK (length({self.name}) < {max_length} AND length({self.name}) > {min_length})"
+            self.command = self.base_cmd + self.check
+        else:
+            raise TypeError(warn("Must provide a max_length for StringType"))
 
 
 class BooleanType(_BaseType):

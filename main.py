@@ -1,13 +1,16 @@
-# main.py for example app
+# main.py for test
+
 from nanoAPI import nanoAPI
-from example_app.routes import router
-from example_app.models import User, User2, User3
+from test.routes import test_router
+from test.models import TestModel_A, TestModel_B, TestModel_C
 
-api = nanoAPI()
-api.port = 8000
-api.debug = True
+test_api = nanoAPI()
+test_api.port = 8000
+test_api.debug = True
 
-api.setRouter('/api', router)
-api.setModels(User, User2, User3)
+test_api.setRouter('/nano', test_router)
+test_api.setModels(TestModel_A, TestModel_B, TestModel_C)
 
-api.run()
+test_api.run()
+
+# python3 main.py run:test_api
