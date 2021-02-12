@@ -1,21 +1,45 @@
 from colorama import Fore, Style
 
+
+def highlight(msg):
+    hl = False
+    chars = [char for char in msg]
+    msg = ""
+    for char in chars:
+        if char == "*" and not hl:
+            msg += Fore.YELLOW
+            hl = True
+        elif char == "*" and hl:
+            msg += Style.RESET_ALL
+            hl = False
+        else:
+            msg += char
+    return msg
+
+
 def err(field, err):
-    return Fore.RED + Style.BRIGHT + "[ERR]  " + Style.RESET_ALL + Fore.YELLOW + f"{field}: " + Style.RESET_ALL + f"{err}"
+    err = highlight(err)
+    return f"{Fore.RED}{Style.BRIGHT}[ERR]  {Style.RESET_ALL}{Fore.YELLOW}{field}: {Style.RESET_ALL}{err}"
+
 
 def warn(msg):
-    return Fore.YELLOW + msg + Style.RESET_ALL
+    return f"{Fore.YELLOW}{msg}{Style.RESET_ALL}"
+
 
 def msg(field, msg):
-    return Fore.YELLOW + Style.BRIGHT + f"[{field}]  " + Style.RESET_ALL + f"{msg}"
+    msg = highlight(msg)
+    return f"\b\b{Fore.YELLOW}{Style.BRIGHT}[{field}]  {Style.RESET_ALL}{msg}"
+
 
 def log(field, head, body):
     clr = Fore.GREEN if field == 'REQ' else Fore.BLUE
-    return clr + Style.BRIGHT + f"[{field}]  " + Style.RESET_ALL + Fore.YELLOW + f"{head}: " + Style.RESET_ALL + body
+    body = highlight(body)
+    return f"{clr}{Style.BRIGHT}[{field}]  {Style.RESET_ALL}{Fore.YELLOW}{head}: {Style.RESET_ALL}{body}"
+
 
 if __name__ == '__main__':
-    print(warn("Testing logging system"))
-    print(log("REQ", "POST", "/test/url"))
+    print(log("REQ", "POST", "*/*test*/*url"))
     print(log("RES", 200, "OK"))
-    print(err("TEST", "Testing logging system"))
-    print(msg("Testing logging system"))
+    print(err("TEST", "Testing *logging* system"))
+    print(msg("TEST", "Testing *logging* system"))
+    print(warn("Testing logging system"))

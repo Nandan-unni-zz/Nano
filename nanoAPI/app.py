@@ -12,6 +12,7 @@ class nanoAPI:
     def __init__(self, port=8000, debug=True):
         # print(msg("RUN", ""))
         self.port = port
+        self.host = "127.0.0.1"
         self.debug = debug
         self.router = Router()
         self.database = DB()
@@ -57,10 +58,13 @@ class nanoAPI:
 
     def gunicorn_config(self):
         cmd = ""
-        cmd = cmd + f"-b 127.0.0.1:{self.port}"
+        cmd = cmd + f"-b {self.host}:{self.port}"
         cmd = cmd + (" --reload" if self.debug else "")
         cmd = cmd + " --log-level warning"
         return cmd
+
+    def run_log(self):
+        return msg("RUN", f"Running server at *http://{self.host}:{self.port}*\n\t\bUse *CTRL+C* to stop the server")
 
     def run(self):
         # arguments = ['run:app', 'run:db', 'create:testuser', 'create:admin']
@@ -72,10 +76,11 @@ class nanoAPI:
                 if param == 'db':
                     print(msg("RUN", "DataBase"))
                     self.database.boot()
-                    print(msg("END", "DataBase"))
+                    print("\n", msg("END", "DataBase"))
                 else:
                     print(msg("RUN", "Server"))
                     run_cmd = f"gunicorn main:{param} {self.gunicorn_config()}"
+                    print(self.run_log())
                     os.system(run_cmd)
                     print(msg("END", "Server"))
             elif command == 'create':

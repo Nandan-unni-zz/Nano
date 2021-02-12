@@ -39,6 +39,7 @@ class Model:
 
     @classmethod
     def get_fields(self):
+        self.fields.clear()
         for field in self.__dict__:
             if ((field.startswith("__") and field.endswith("__"))
                 or str(self.__dict__[field]).startswith("<classmethod")
@@ -46,8 +47,11 @@ class Model:
                     or field == "table_name"):
                 pass
             else:
-                self.fields.append(self.__dict__[field].command)
+                self.fields.append(self.__dict__[field])
         return self.fields
+
+    # def get_field_commands(self):
+    #     return self.field_commands
 
     @classmethod
     def data_parser(self):

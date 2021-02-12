@@ -1,6 +1,6 @@
 import sqlite3
 from nanoAPI.utils import err, msg
-from nanoAPI.db.model import Model
+from .model import Model
 
 
 class DB:
@@ -26,15 +26,21 @@ class DB:
     def boot(self):
         fields = "id INT PRIMARY KEY NOT NULL"
         for model in self.models:
-            for field in model.get_fields():
-                fields = fields + ", " + field
-            # try:
-            self.admin.execute(
-                f"CREATE TABLE IF NOT EXISTS {model.table_name} ({fields})")
-            print(msg("BOOT", f"Model {model.__name__}"))
-            # except sqlite3.OperationalError:
-            #     print(err("MODEL", f"Model {model.__name__} already booted"))
-            fields = "id INT PRIMARY KEY NOT NULL"
+            print("\n", msg("BOOT", f"Model {model.__name__}"))
+            if issubclass(model, Model):
+                for field in model.get_fields():
+                    fields = fields + ", " + field.command
+                    print(f"\t  - {field.name}")
+                try:
+                    self.admin.execute(
+                        f"CREATE TABLE IF NOT EXISTS {model.table_name} ({fields})")
+                except sqlite3.OperationalError:
+                    print(
+                        err("MODEL", f"Error in booting {model.__name__} model"))
+                fields = "id INT PRIMARY KEY NOT NULL"
+            else:
+                print(
+                    err(model.__name__, f"Models must be an instance of *nanoAPI.db.model.Model*"))
         self.server.commit()
 
     def __del__(self):
