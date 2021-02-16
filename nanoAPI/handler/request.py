@@ -9,7 +9,6 @@ class Request:
         self.params = {}
         self.queries = parse_route(
             f"{self.url}?{environ['QUERY_STRING']}")['queries']
-        print(self.queries)
         self.content_length = int(environ.get('CONTENT_LENGTH', 0))
         self.data = environ['wsgi.input'].read(
             self.content_length).decode('utf-8')

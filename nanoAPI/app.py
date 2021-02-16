@@ -1,32 +1,21 @@
 from nanoAPI.utils import msg, warn, err
 from nanoAPI.handler import Router, Request, Response
 from nanoAPI.db import DB
-from gunicorn import app
-# from gunicorn.app.base import BaseApplication
-import os
-import sys
 
 
 class nanoAPI:
 
     def __init__(self, port=8000, debug=True):
-        # print(msg("RUN", ""))
         self.port = port
         self.host = "127.0.0.1"
         self.debug = debug
         self.router = Router()
         self.database = DB()
-        self.APP_DIR = os.path.abspath(os.getcwd())
-        # super().__init__()
-        # self.cfg.set('loglevel', 'warning')
 
     def __call__(self, environ, start_response):
         response = self.request_handler(environ)
         start_response(response.status_msg, response.headers)
         return [bytes(response.data, 'utf-8')]
-
-    # def __del__(self):
-    #     self.restarted = True
 
     def request_handler(self, request_environ):
         request = Request(request_environ)
@@ -48,45 +37,15 @@ class nanoAPI:
         print(response)
         return response
 
-    def setRouter(self, base_path=None, router=None):
+    def set_router(self, base_path=None, router=None):
         for i in range(len(router.routes)):
             router.routes[i]['url'] = base_path + router.routes[i]['url']
         self.router.routes.extend(router.routes)
 
-    def setModels(self, *args):
+    def set_models(self, *args):
         self.database.set_models(*args)
 
     def gunicorn_config(self):
-        cmd = ""
-        cmd = cmd + f"-b {self.host}:{self.port}"
-        cmd = cmd + (" --reload" if self.debug else "")
-        cmd = cmd + " --log-level warning"
+        cmd = f"-b {self.host}:{self.port} --log-level warning"
+        cmd += (" --reload" if self.debug else "")
         return cmd
-
-    def run_log(self):
-        return msg("RUN", f"Running server at *http://{self.host}:{self.port}*\n\t\bUse *CTRL+C* to stop the server")
-
-    def run(self):
-        # arguments = ['run:app', 'run:db', 'create:testuser', 'create:admin']
-        try:
-            arg = sys.argv[1]
-            command = arg.split(':')[0]
-            param = arg.split(':')[1]
-            if command == 'run':
-                if param == 'db':
-                    print(msg("RUN", "DataBase"))
-                    self.database.boot()
-                    print("\n", msg("END", "DataBase"))
-                else:
-                    print(msg("RUN", "Server"))
-                    run_cmd = f"gunicorn main:{param} {self.gunicorn_config()}"
-                    print(self.run_log())
-                    os.system(run_cmd)
-                    print(msg("END", "Server"))
-            elif command == 'create':
-                if param == 'admin':
-                    pass
-                else:
-                    pass
-        except IndexError:
-            print(err("ARG", "Invalid manager arguments"))

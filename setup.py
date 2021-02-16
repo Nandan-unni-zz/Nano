@@ -7,7 +7,7 @@ with open("README.md", "r") as README:
 
 setup(
     name="nanoAPI",
-    version="0.3.0",
+    version="0.4.0",
     author="Nandanunni A S",
     author_email="asnqln@gmail.com",
     description="A nano web framework",
