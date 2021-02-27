@@ -22,7 +22,7 @@ class Router:
         for route in self.routes:
             if req.method == route['method']:
                 if req.url == route['url']:
-                    return route['controller']
+                    return route['controller'], req
                 else:
                     isSame = False
                     req_modes = req.url.split("/")
@@ -47,6 +47,3 @@ class Router:
                 pass
         return None, req
 
-
-if __name__ == '__main__':
-    route = Route()

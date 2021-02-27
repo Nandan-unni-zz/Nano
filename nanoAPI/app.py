@@ -26,14 +26,12 @@ class nanoAPI:
             response = res_controller(request)
         else:
             response = Response(status=404)
-            print(
-                err("REQUEST", f"URL '{request.url}' not found in server router"))
+            print(err("REQUEST", f"URL '{request.url}' not found in server router"))
         if not isinstance(response, Response):
             response = Response(status=500)
             print(err("RESPONSE", "The controller must return a Response object"))
             print(response)
-            raise TypeError(
-                warn("The controller must return a HTTP Response object"))
+            raise TypeError(warn("The controller must return a HTTP Response object"))
         print(response)
         return response
 

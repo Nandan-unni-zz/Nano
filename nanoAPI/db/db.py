@@ -24,7 +24,7 @@ class DB:
         return is_booted
 
     def boot(self):
-        fields = "id INT PRIMARY KEY NOT NULL"
+        fields = "id INTEGER PRIMARY KEY AUTOINCREMENT"
         for model in self.models:
             print("\n", msg("BOOT", f"Model {model.__name__}"))
             if issubclass(model, Model):
@@ -34,10 +34,10 @@ class DB:
                 try:
                     self.admin.execute(
                         f"CREATE TABLE IF NOT EXISTS {model.table_name} ({fields})")
-                except sqlite3.OperationalError:
+                except sqlite3.OperationalError as sql_err:
                     print(
-                        err("MODEL", f"Error in booting {model.__name__} model"))
-                fields = "id INT PRIMARY KEY NOT NULL"
+                        err(model.__name__, f"{str(sql_err)}"))
+                fields = "id INTEGER PRIMARY KEY AUTOINCREMENT"
             else:
                 print(
                     err(model.__name__, f"Models must be an instance of *nanoAPI.db.model.Model*"))

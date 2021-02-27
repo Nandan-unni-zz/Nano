@@ -66,16 +66,16 @@ router.get("/", index)
 **Step 4**: create nanoAPI app and assemble your router and models
 ```python
 # main.py
-from nanoAPI import nanoAPI
+from nanoAPI import nanoAPI, run
 from .routes import router
 from .models import User
 
 api = nanoAPI()
 
-api.setRouter('/api', router)
-api.setModels(User)
+api.set_router('/api', router)
+api.set_models(User)
 
-api.run()
+run(api)
 ```
 
 <br />
