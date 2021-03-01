@@ -10,6 +10,8 @@ def parse_route(route):
         for query in queries:
             parsed_route["queries"][query.split("=")[0]] = query.split("=")[1]
         parsed_route["url"] = str(route).split("?")[0]
+    if parsed_route["url"].endswith("?"): parsed_route["url"] = parsed_route["url"][:-1]
+    if parsed_route["url"].endswith("/"): parsed_route["url"] = parsed_route["url"][:-1]
     return parsed_route
 
 

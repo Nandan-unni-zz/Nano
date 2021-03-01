@@ -14,6 +14,7 @@ class __BaseType__():
 
 
 class IntegerType(__BaseType__):
+    pytype = int
     def __init__(self, name=None, max=10000000, min=-10000000, unique=False, required=False, default=None):
         super().__init__('INTEGER', name, unique, required)
         self.check = f"CHECK ({self.name} < {max} AND {self.name} > {min})"
@@ -22,6 +23,7 @@ class IntegerType(__BaseType__):
 
 
 class StringType(__BaseType__):
+    pytype = str
     def __init__(self, name=None, max_length=None, min_length=0, unique=False, required=False, default=None):
         if max_length is not None:
             super().__init__('TEXT', name, unique, required)
@@ -33,6 +35,7 @@ class StringType(__BaseType__):
 
 
 class BooleanType(__BaseType__):
+    pytype = bool
     def __init__(self, name=None, unique=False, required=False, default=None):
         super().__init__('INTEGER', name, unique, required)
         self.default = f"DEFAULT {1 if default else 0} "
@@ -40,12 +43,14 @@ class BooleanType(__BaseType__):
 
 
 class EmailType(__BaseType__):
+    pytype = str
     def __init__(self, name: str, unique: bool, required: bool):
         super().__init__('TEXT', name, unique, required)
         self.command = self.base_cmd
 
 
-class LinkType(__BaseType__):
+class RelationType(__BaseType__):
+    pytype = str
     def __init__(self, name: str, unique: bool, required: bool):
         super().__init__('TEXT', name, unique, required)
         self.command = self.base_cmd
